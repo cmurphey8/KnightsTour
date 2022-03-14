@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class KnightsTour {
     // declare data arrays
-    public static int[][] chess;
+    public static boolean[][] chess;
     public static final int N = 8;
 
     // list of all moves... eg, xDiff[0], yDiff[0] shifts right (+1) col, down (+2) rows
@@ -24,7 +24,7 @@ public class KnightsTour {
         else ChessBoard.SLEEP = 100;
 
         // declare chess board array
-        chess = new int[N][N];
+        chess = new boolean[N][N];
 
         // run sims until we find a valid knight's tour!
         int count = 0;
@@ -37,16 +37,15 @@ public class KnightsTour {
 
     // run a knight's tour simulation
     public static boolean runSim() throws IOException {   
-        // init arrays and graphics
-        ChessBoard.fillChess();
+        // init array
+        fillChess();
             
         // find random initial pos to start the tour
         int knightRow = (int) Math.round(Math.random() * (N - 1));
         int knightCol = (int) Math.round(Math.random() * (N - 1));
 
         // update chessboard && init graphics
-        // UPDATE TO BOOLEAN!!
-        chess[knightRow][knightCol] = 1;
+        chess[knightRow][knightCol] = true;
         ChessBoard.initBoard(knightRow, knightCol);
 
         // true at each index where we have a valid move
@@ -60,7 +59,7 @@ public class KnightsTour {
             knightCol += xDiff[direction];
 
             // update chessboard && graphics
-            chess[knightRow][knightCol] = 1;
+            chess[knightRow][knightCol] = true;
             ChessBoard.updateBoard(knightRow, knightCol);
 
             // update moves array from new location
@@ -74,7 +73,7 @@ public class KnightsTour {
     // FINDNEXT VS FINDNEXTRANDOM
     // RENAME KR KC TO KROW, KCOL
     // YOU DO: find all possible moves from chess board index (kR, kC)
-    public static int findNext(int kR, int kC)
+    public static int findNext(int kRow, int kCol)
     {   
         int bestMove = Integer.MAX_VALUE;
         double maxDist = Double.MIN_VALUE;
@@ -85,20 +84,22 @@ public class KnightsTour {
             // 2b)  move has smaller distance from center than maxDist
 
         for (int i = 0; i < numMoves; i++) {
+            int kRowNew = kRow + yDiff[i];
+            int kColNew = kCol + xDiff[i];
 
             // MAKE VARS FOR KC+XDIFF, KR+YDIFF -> NEWKrOW, NEWKCOL
             // 1) if move is in bounds...
-            boolean xInBounds = kC + xDiff[i] < N && kC + xDiff[i] >= 0;
-            boolean yInBounds = kR + yDiff[i] < N && kR + yDiff[i] >= 0;
+            boolean xInBounds = kColNew < N && kColNew >= 0;
+            boolean yInBounds = kRowNew < N && kRowNew >= 0;
             if (xInBounds && yInBounds) {
 
                 // START WITH RANDOM ASSIGNMENT, SO LONG AS VALID
                 // find distance from new location to center of the board
-                double compareDist = distToCenter(kR + yDiff[i], kC + xDiff[i]);
+                double compareDist = distToCenter(kRowNew, kColNew);
 
                 // 2a) if move does not revisit a cell && 
                 // 2b) move has smaller distance from center than maxDist...
-                if (chess[kR + yDiff[i]][kC + xDiff[i]] == 0 && compareDist > maxDist) {
+                if (!chess[kRowNew][kColNew] && compareDist > maxDist) {
                     bestMove = i;
                     maxDist = compareDist;
                 }
@@ -113,11 +114,20 @@ public class KnightsTour {
         return Math.sqrt((row + 0.5 - N / 2.0) * (row + 0.5 - N / 2.0)  + (col + 0.5 - N / 2.0)*(col + 0.5 - N / 2.0));
     }
 
+    // YOU DO: reinit chess array with 0s
+    public static void fillChess() {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                chess[i][j] = false;
+            }
+        }
+    }
+
     // YOU DO: check for a complete knight's tour
     public static boolean allOnes() {
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                if (chess[i][j] == 0) return false;
+                if (!chess[i][j]) return false;
             }
         }
         return true;
