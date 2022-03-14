@@ -11,9 +11,10 @@ import java.io.IOException;
 public class KnightsTour {
     // declare data arrays
     public static int[][] chess;
-    public static final int N = 12;
+    public static final int N = 8;
 
     // list of all moves... eg, xDiff[0], yDiff[0] shifts right (+1) col, down (+2) rows
+    // MAKE THIS A 2D ARRAY
     public static final int[] xDiff = {1, -1, 2, 2, 1, -1, -2, -2};
     public static final int[] yDiff = {2, 2, 1, -1, -2, -2, 1, -1};
     public static final int numMoves = xDiff.length;
@@ -27,9 +28,9 @@ public class KnightsTour {
 
         // run sims until we find a valid knight's tour!
         int count = 0;
-        while (!runSim()){
+        do {
             System.out.println("Round: " + count++);
-        }
+        } while (!runSim());
         
         System.out.println("got one!");
     }
@@ -42,8 +43,10 @@ public class KnightsTour {
         // find random initial pos to start the tour
         int knightRow = (int) Math.round(Math.random() * (N - 1));
         int knightCol = (int) Math.round(Math.random() * (N - 1));
-        chess[knightRow][knightCol] = 1;
 
+        // update chessboard && init graphics
+        // UPDATE TO BOOLEAN!!
+        chess[knightRow][knightCol] = 1;
         ChessBoard.initBoard(knightRow, knightCol);
 
         // true at each index where we have a valid move
@@ -53,9 +56,8 @@ public class KnightsTour {
         while(direction < numMoves) {
             
             // select direction where we will have (nonzero) minimum number of possible next moves
-            // int direction = findNext();
-            knightCol += xDiff[direction];
             knightRow += yDiff[direction];
+            knightCol += xDiff[direction];
 
             // update chessboard && graphics
             chess[knightRow][knightCol] = 1;
@@ -69,23 +71,33 @@ public class KnightsTour {
         return allOnes();
     }
 
-    // find all possible moves from chess board index (kR, kC)
+    // FINDNEXT VS FINDNEXTRANDOM
+    // RENAME KR KC TO KROW, KCOL
+    // YOU DO: find all possible moves from chess board index (kR, kC)
     public static int findNext(int kR, int kC)
     {   
         int bestMove = Integer.MAX_VALUE;
         double maxDist = Double.MIN_VALUE;
-        // find all possible moves from index (kR, kC) in chess array
+        
+        // YOU DO:  find best move from index (kR, kC) in chess array such that:
+            // 1)   move is in bounds
+            // 2a)  move does not revisit a cell
+            // 2b)  move has smaller distance from center than maxDist
+
         for (int i = 0; i < numMoves; i++) {
 
-            // if move i falls in range of our array indexes...
-            boolean xCheck = kC + xDiff[i] < N && kC + xDiff[i] >= 0;
-            boolean yCheck = kR + yDiff[i] < N && kR + yDiff[i] >= 0;
-            if (xCheck && yCheck) {
+            // MAKE VARS FOR KC+XDIFF, KR+YDIFF -> NEWKrOW, NEWKCOL
+            // 1) if move is in bounds...
+            boolean xInBounds = kC + xDiff[i] < N && kC + xDiff[i] >= 0;
+            boolean yInBounds = kR + yDiff[i] < N && kR + yDiff[i] >= 0;
+            if (xInBounds && yInBounds) {
 
-                // separate these conditions to avoid NullPointerException!
-                double compareDist = ChessBoard.distance(kR + yDiff[i], kC + xDiff[i]);
+                // START WITH RANDOM ASSIGNMENT, SO LONG AS VALID
+                // find distance from new location to center of the board
+                double compareDist = distToCenter(kR + yDiff[i], kC + xDiff[i]);
 
-                // if move i does not revisit a cell, and is furthest from center of the board
+                // 2a) if move does not revisit a cell && 
+                // 2b) move has smaller distance from center than maxDist...
                 if (chess[kR + yDiff[i]][kC + xDiff[i]] == 0 && compareDist > maxDist) {
                     bestMove = i;
                     maxDist = compareDist;
@@ -95,7 +107,13 @@ public class KnightsTour {
         return bestMove;
     }
 
-    // check for a complete knight's tour
+    // HELPER: find distance from row, col to center of board
+    public static double distToCenter(int row, int col)
+    {
+        return Math.sqrt((row + 0.5 - N / 2.0) * (row + 0.5 - N / 2.0)  + (col + 0.5 - N / 2.0)*(col + 0.5 - N / 2.0));
+    }
+
+    // YOU DO: check for a complete knight's tour
     public static boolean allOnes() {
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
