@@ -36,6 +36,7 @@ public class ChessBoard {
     // track last move to update from
     static int kRowOld;
     static int kColOld;
+    static Color lineColor = Color.GREEN;
 
     public static int SLEEP;
 
@@ -43,7 +44,11 @@ public class ChessBoard {
     public static void updateBoard(int kR, int kC) {
         drawKnight(kR, kC);
         
-        osg.setColor(Color.GREEN);
+        osg.setColor(lineColor);
+        // lineColor = new Color(  (int) Math.round(lineColor.getRed() - 255.0 / KnightsTour.N / KnightsTour.N), 
+        //                         (int) Math.round(lineColor.getGreen() + 255.0 / KnightsTour.N / KnightsTour.N), 
+        //                         lineColor.getBlue());
+        // System.out.println(lineColor.getRGB());
         osg.drawLine(scaleIndex(kColOld) + SIZE / 2, scaleIndex(kRowOld) + SIZE / 2, scaleIndex(kC) + SIZE / 2, scaleIndex(kR) + SIZE / 2);
         
         kRowOld = kR;
@@ -92,31 +97,14 @@ public class ChessBoard {
         osg.drawImage(knight, scaleKnight(col, kW), scaleKnight(row, kH), null);
     }
 
-
     // scale from index to CENTERED panel coordinates
     public static int scaleKnight(int index, int dimSize) {
         return scaleIndex(index) + (int) ((SIZE - dimSize) / 2.0);
-    }
-
-    // find distance from center of the board
-    public static double distance(int kC, int kR) {
-        return Math.sqrt(Math.pow(scaleIndex(kC) + SIZE / 2 - WIDTH / 2.0, 2) 
-                        + Math.pow(scaleIndex(kR) + SIZE / 2 - HEIGHT / 2.0, 2));                         
     }
 
     // HELPER: scale from index to panel coordinates
     public static int scaleIndex(int index)
     {
         return index * SIZE + EDGE;
-    }
-
-
-    // reinit chess array with 0s
-    public static void fillChess() {
-        for (int i = 0; i < KnightsTour.N; i++) {
-            for (int j = 0; j < KnightsTour.N; j++) {
-                KnightsTour.chess[i][j] = 0;
-            }
-        }
     }
 }   
