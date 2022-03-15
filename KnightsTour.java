@@ -83,6 +83,7 @@ public class KnightsTour {
 
     // YOU DO: reinit chess array with boolean value false
     public static void fillChess() {
+        
     }  
 
     // YOU DO: check for a complete knight's tour (update from true)
@@ -108,8 +109,8 @@ public class KnightsTour {
             // update counter
             count++;
 
-            // YOU DO: is move in bounds && is this move unvisited? update from false
-            isValid = xyInBounds(kRowNew, kColNew) && false;
+            // YOU DO: is move in bounds && is this move unvisited?
+            isValid = xyInBounds(kRowNew, kColNew) && false; // update from false
 
         } while (count < 20 && !isValid);
 
@@ -119,9 +120,9 @@ public class KnightsTour {
 
     // YOU DO: check for a complete knight's tour
     public static boolean xyInBounds(int rowIndex, int colIndex) {
-        // YOU DO: are row, col valid indexes for the chess array? update from false
-        boolean xInBounds = false;
-        boolean yInBounds = false;
+        // YOU DO: are row, col valid indexes for the chess array? 
+        boolean xInBounds = false; // update from false
+        boolean yInBounds = false; // update from false
 
         return (xInBounds && yInBounds);
     }
@@ -145,8 +146,8 @@ public class KnightsTour {
 
                 // 2a) if move does not revisit a cell && 
                 // 2b) move has smaller distance from center than maxDist...
-                // update from false
-                if (false) {
+                boolean isBest = false; // update from false
+                if (isBest) { 
                     bestMove = i;
                     maxDist = compareDist;
                 }
