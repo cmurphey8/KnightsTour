@@ -136,7 +136,7 @@ public class KnightsTour {
                 // find distance from new location to center of the board
                 double compareDist = distToCenter(kRow + yDiff[i], kCol + xDiff[i]);
 
-                // YOU DO: if move has smaller distance from center than maxDist...
+                // YOU DO: if move has greater distance from center than maxDist...
                 boolean isBest = false; // update from false
                 if (isBest) { 
                     // YOU DO: update bestMove and maxDist
