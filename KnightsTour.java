@@ -137,7 +137,7 @@ public class KnightsTour {
                 double compareDist = distToCenter(kRow + yDiff[i], kCol + xDiff[i]);
 
                 // YOU DO: if move has smaller distance from center than maxDist...
-                boolean isBest = compareDist > maxDist; // update from false
+                boolean isBest = false; // update from false
                 if (isBest) { 
                     bestMove = i;
                     maxDist = compareDist;
