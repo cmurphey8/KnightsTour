@@ -139,8 +139,7 @@ public class KnightsTour {
                 // YOU DO: if move has smaller distance from center than maxDist...
                 boolean isBest = false; // update from false
                 if (isBest) { 
-                    bestMove = i;
-                    maxDist = compareDist;
+                    // YOU DO: update bestMove and maxDist
                 }
             } 
         }
