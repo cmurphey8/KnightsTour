@@ -108,7 +108,8 @@ public class KnightsTour {
         boolean cellVisited = false;
 
         // is move inbounds and not yet visited??
-        return xInBounds && yInBounds && !cellVisited;
+        if (xInBounds && yInBounds) return !cellVisited;
+        return false;
     }
 
     // choose next knight move index randomly
