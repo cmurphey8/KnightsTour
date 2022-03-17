@@ -17,7 +17,8 @@
 import java.io.IOException;
 
 public class KnightsTour {
-    // declare data arrays
+    
+    // declare chess array - true if index has been visited
     public static boolean[][] chess;
     public static final int N = 8;
 
@@ -64,7 +65,7 @@ public class KnightsTour {
             // -OR- choose by max distance from center
             // int direction = findDistMethod(knightRow, knightCol);
 
-            // select direction where we will have (nonzero) minimum number of possible next moves
+            // update index of knight on chessboard
             knightRow += yDiff[direction];
             knightCol += xDiff[direction];
 
@@ -110,7 +111,7 @@ public class KnightsTour {
         return (xInBounds && yInBounds && !cellVisited);
     }
 
-    // YOU DO: complete isValid to choose next knight by random update
+    // choose next knight move index randomly
     public static int findRandom(int kRow, int kCol)
     {
         int rIndex;
@@ -123,7 +124,7 @@ public class KnightsTour {
         return rIndex;
     }
 
-    // YOU DO: choose next knight by max distance from center of the board
+    // YOU DO: choose next knight move by max distance from center of the board after update
     public static int findDistMethod(int kRow, int kCol)
     {
         int bestMove = Integer.MAX_VALUE;
